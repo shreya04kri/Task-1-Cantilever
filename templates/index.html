@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1 class="heading">ITEM LIST</h1>
+    <form method="POST" action="{{ url_for('index') }}">
+        <input type="text" name="search_query" placeholder="Search for items" value="{{ search_query }}">
+        <button type="submit">Search</button>
+    </form>
+    <div class="main-page-link">
+        <a href="{{ url_for('index') }}">Go to Main Page</a>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div class="item-count">
+        <p>Number of items found: {{ items|length }}</p>
+    </div>
+    {% if items %}
+        <div class="item-container">
+            {% for item in items %}
+                <div class="item-card">
+                    <a href="{{ item['link'] }}" target="_blank">{{ item['title'] }}</a>
+                    <p>Rating: {{ item['rating'] }}</p>
+                    <p>Price: {{ item['price'] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No items found.</p>
+    {% endif %}
+</body>
+</html>
